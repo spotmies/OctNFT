@@ -171,7 +171,7 @@ export default function HomePage() {
 
   const getContract = () => {
     try {
-      const contractAddress = "";
+      const contractAddress = "0x4E2143BE5eca4E4b9942EA9a9aEf762251784425";
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner();
       const contract = new ethers.Contract(
@@ -270,6 +270,14 @@ export default function HomePage() {
     }
   };
 
+  const StartMint = async () => {
+    console.log("Toggle Mint");
+    getContract().toggleMinting();
+  };
+  const setBaseUri = async () => {
+    getContract().setBaseURI("");
+  };
+
   //
   //
   //
@@ -313,17 +321,24 @@ export default function HomePage() {
               window.open(constants.etherScanLink, "_blank");
             }}
           />
-         {walletAddress === "" ? <img
-            src="/assets/meta-mask-icon.png"
-            className="h-[30px] sm:h-[40px] cursor-pointer"
-            onClick={() => {
-              requestAccount(true);
-            }}
-          /> : <p className="text-black bg-white p-[10px] rounded-3xl font-bold cursor-pointer"
-          onClick={() =>{
-            alert(`Wallet Connected , ${walletAddress}`)
-          }}
-          >0x...{walletAddress.slice(-4)}</p> }
+          {walletAddress === "" ? (
+            <img
+              src="/assets/meta-mask-icon.png"
+              className="h-[30px] sm:h-[40px] cursor-pointer"
+              onClick={() => {
+                requestAccount(true);
+              }}
+            />
+          ) : (
+            <p
+              className="text-black bg-white p-[10px] rounded-3xl font-bold cursor-pointer"
+              onClick={() => {
+                alert(`Wallet Connected , ${walletAddress}`);
+              }}
+            >
+              0x...{walletAddress.slice(-4)}
+            </p>
+          )}
         </div>
       </div>
       {/* Mobile view */}
@@ -335,12 +350,19 @@ export default function HomePage() {
         </div>
       </div>
       {/* end of mobile view */}
-      <div className="w-full flex flex-row hidden justify-between items-end sm:inline-flex">
-        <img src="/assets/1.png" className="w-[30vw]" />
-        <div className="flex flex-col h-full items-center justify-center">
+      <div className="w-full flex flex-row hidden justify-between items-center sm:inline-flex">
+        {/* <img src="/assets/1.png" className="w-[30vw]" /> */}
+        <p onClick={() => StartMint()} className="text-lg cursor-pointer">
+          Toggle Mint
+        </p>
+        <p className="m-[30px] cursor-pointer" onClick={setBaseUri}>
+          {" "}
+          base uri
+        </p>
+        {/* <div className="flex flex-col h-full items-center justify-center">
           {totalMintCount()}
-        </div>
-        {mintSection()}
+        </div> */}
+        {/* {mintSection()} */}
       </div>
     </div>
   );
